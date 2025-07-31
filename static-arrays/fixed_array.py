@@ -1,42 +1,34 @@
 import array
 
 
-class FixedUnsortedArray:
-
-    """Sets the maximum array size and creates an empty array.array"""
-
-    def __init__(self, size, type_code):
-        self.size = size
+class FixedArray:
+    def __init__(self, type_code, size):
         self.type_code = type_code
+        self.size = size
         self.arr = array.array(self.type_code)
         self.length = 0
-
-    """Inserts new element if there is room"""
 
     def insert(self, value):
         if self.length < self.size:
             self.arr.append(value)
+            print(f"{value} added to the array.")
             self.length += 1
-            print(f"Inserted {value}")
         else:
-            print("Array is full. Cannot insert more elements.")
+            print("Array is full.")
 
     def delete(self, value):
         if value in self.arr:
             self.arr.remove(value)
+            print(f"{value} deleted from the array.")
             self.length -= 1
-            print(f"Deleted {value}")
         else:
-            print(f"Value {value} not found in the array.")
-
-    """Finding the first element in the array"""
+            print(f"{value} not in the array.")
 
     def find(self, target):
         for index in range(self.length):
             if self.arr[index] == target:
-                return index
+                return (index, target)
         return None
-    """Finding all occurences of a target"""
 
     def search(self, target):
         indices = []
@@ -44,34 +36,30 @@ class FixedUnsortedArray:
             if self.arr[index] == target:
                 indices.append(index)
         if indices:
-            return indices
+            return (target, indices)
         return None
 
     def traverse(self, callback):
-        """Apply a callback function to each inserted element (side-effect only)"""
         for index in range(self.length):
             callback(self.arr[index])
 
     def display(self):
-        print("Current array elements: ", list(self.arr))
+        print(list(self.arr))
 
 
-a = FixedUnsortedArray(6, "i")
-
+a = FixedArray("i", 6)
+a.insert(3)
+a.insert(5)
 a.insert(4)
-a.insert(12)
-a.insert(14)
-a.insert(16)
-a.insert(16)
-a.insert(16)
+a.insert(5)
+a.insert(5)
+a.insert(5)
 
-a.display()
-a.insert(22)
+print(a.search(5))
+print(a.find(12))
+a.traverse(print)
 
-target = a.search(16)
-print(target)
 
 a.delete(12)
+a.delete(5)
 a.display()
-a.delete(344)
-a.traverse(print)
