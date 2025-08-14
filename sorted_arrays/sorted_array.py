@@ -71,3 +71,49 @@ class SortedArray:
         Return string representation of the array's current sorted contents.
         """
         return str(self.traverse())
+
+    def linear_search(self, target):
+        """
+        Searches for target from left to right of the array (linear search)
+        """
+        for i in range(self._size):
+            if self._array[i] == target:
+                return i
+            # For sorted array, if the current element is larger than target, then there is no need to continue searching
+            elif self._array[i] > target:
+                return None
+        return None
+
+    def binary_search(self, target):
+        left = 0
+        right = self._size - 1
+        while left <= right:
+            mid_index = (left+right)//2
+            mid_value = self._array[mid_index]
+            if mid_value == target:
+                return mid_index
+            elif mid_value > target:
+                right = mid_index - 1
+            else:
+                left = mid_index + 1
+        return None
+
+    def delete(self, target):
+        index = self.binary_search(target)
+        if index is None:
+            return ValueError(f'Unable to delete element {target}: the entry is not in the array')
+        for i in range(index, self._size-1):
+            self._array[i] = self._array[i+1]
+
+
+a = SortedArray(7, "i")
+print(a.traverse())
+a.insert(12)
+a.insert(2)
+a.insert(1)
+a.insert(20)
+a.insert(45)
+print(a.traverse())
+print(a.linear_search(2))
+a.delete(20)
+print(a.traverse())
